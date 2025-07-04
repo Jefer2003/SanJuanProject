@@ -9,21 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 var AllowAll = "AllowAll";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: AllowAll,
-    policy =>
+    options.AddPolicy(name: AllowAll, policy =>
     {
         policy.AllowAnyOrigin()
-     .AllowAnyHeader()
-     .AllowAnyMethod();
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 
 // Configuración de la base de datos
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+ ?? Environment.GetEnvironmentVariable("DefaultConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
- options.UseSqlServer(
- builder.Configuration.GetConnectionString("DefaultConnection")
- ?? Environment.GetEnvironmentVariable("DefaultConnection")
- )
+ options.UseSqlServer(connectionString)
 );
 
 // Configuración de controladores y JSON
@@ -49,7 +48,6 @@ app.UseSwaggerUI();
 // No usar HTTPS redirection en Render
 // app.UseHttpsRedirection();
 
-// Habilitar CORS
 app.UseCors(AllowAll);
 
 app.UseAuthorization();
