@@ -1,0 +1,6 @@
+@SanJuanProject_HostAddress = http://localhost:5139
+
+GET {{SanJuanProject_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
